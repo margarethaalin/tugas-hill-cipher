@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas 3 Kriptografi - Margareta Alinsa Ejung</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; }
+        .container { max-width: 600px; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin: 0 auto; }
+        h2 { text-align: center; color: #2c3e50; margin-bottom: 5px; }
+        .mhs-info { text-align: center; font-size: 14px; color: #7f8c8d; margin-bottom: 25px; }
+        label { font-weight: bold; display: block; margin-top: 15px; margin-bottom: 5px; }
+        input[type="text"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .matrix-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; max-width: 150px; margin-bottom: 15px; }
+        .matrix-container input { width: 100%; padding: 8px; text-align: center; border: 1px solid #ccc; border-radius: 4px; }
+        button { width: 100%; padding: 12px; background-color: #27ae60; color: white; border: none; border-radius: 4px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 15px; }
+        button:hover { background-color: #219150; }
+        .result-box { margin-top: 20px; padding: 15px; background-color: #e8f8f5; border-left: 5px solid #27ae60; border-radius: 4px; }
+        .result-box p { margin: 5px 0; font-size: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Aplikasi Enkripsi Hill Cipher 2x2</h2>
+    <div class="mhs-info">
+        <p><strong>Nama:</strong> Margareta Alinsa Ejung | <strong>NIM:</strong> 524012007</p>
+        <p>Tugas 3 Kriptografi</p>
+    </div>
+    
+    <label>Matriks Kunci (2x2):</label>
+    <div class="matrix-container">
+        <input type="number" id="k11" value="5">
+        <input type="number" id="k12" value="6">
+        <input type="number" id="k21" value="2">
+        <input type="number" id="k22" value="3">
+    </div>
+    
+    <label for="plaintext">Plainteks:</label>
+    <input type="text" id="plaintext" value="Hill CIPHER TIDAK Sulit">
+    
+    <button onclick="prosesEnkripsi()">Jalankan Enkripsi</button>
+    
+    <div class="result-box" id="resultBox" style="display:none;">
+        <p><strong>Hasil Enkripsi:</strong></p>
+        <p>Plainteks Diproses: <span id="outPlain" style="font-family:monospace; font-weight:bold;"></span></p>
+        <p>Cipherteks Akhir: <span id="outCipher" style="font-family:monospace; font-weight:bold; color:#c0392b; font-size:18px;"></span></p>
+    </div>
+</div>
+
+<script>
+function prosesEnkripsi() {
+    let plaintext = document.getElementById("plaintext").value.replace(/[^A-Za-z]/g, "").toUpperCase();
+    
+    let k11 = parseInt(document.getElementById("k11").value);
+    let k12 = parseInt(document.getElementById("k12").value);
+    let k21 = parseInt(document.getElementById("k21").value);
+    let k22 = parseInt(document.getElementById("k22").value);
+    
+    if (plaintext.length % 2 !== 0) {
+        plaintext += "X";
+    }
+    
+    let ciphertext = "";
+    
+    for (let i = 0; i < plaintext.length; i += 2) {
+        let p1 = plaintext.charCodeAt(i) - 65;
+        let p2 = plaintext.charCodeAt(i+1) - 65;
+        
+        let c1 = (k11 * p1 + k12 * p2) % 26;
+        let c2 = (k21 * p1 + k22 * p2) % 26;
+        
+        ciphertext += String.fromCharCode(c1 + 65);
+        ciphertext += String.fromCharCode(c2 + 65);
+    }
+    
+    document.getElementById("outPlain").innerText = plaintext;
+    document.getElementById("outCipher").innerText = ciphertext;
+    document.getElementById("resultBox").style.display = "block";
+}
+</script>
+</body>
+</html>
